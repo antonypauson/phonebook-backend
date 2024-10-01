@@ -25,9 +25,15 @@ let persons = [
     }
 ]
 
+app.get('/info', (request, response) => {
+  response.send('<p>The Phonebook as info for _ people</p>')
+})
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
+
+
 
 const PORT = 3001
 app.listen(PORT, () => {
