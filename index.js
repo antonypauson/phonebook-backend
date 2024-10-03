@@ -28,15 +28,38 @@ let persons = [
 app.post('/api/persons/', (request, response) => {
   const id = Math.floor(Math.random() * 100)
   const body = request.body
-  const person = {
-    name: body.name,
-    number: String(body.number),
-    id: String(id)
+
+  if (!body.name || !body.number) {
+    return response.status(404).json({
+      error: "name or number is missing"
+    })
   }
-  persons = persons.concat(person)
-  response.json(persons)
-  console.log(id)
-  console.log(body.name)
+
+  let nameExists = false
+  persons.forEach(person => {
+    if (person.name === body.name) {
+      nameExists = true
+    }
+  })
+  console.log('nameExists', nameExists)
+
+  if (!nameExists) {
+    const person = {
+      name: body.name,
+      number: String(body.number),
+      id: String(id)
+    }
+    persons = persons.concat(person)
+    response.json(persons)
+    console.log(id)
+    console.log(body.name)
+  }
+  else {
+    return response.status(400).json({
+      error: "name must be unique"
+    })
+  }
+  
 })
 
 app.get('/api/persons/:id', (request, response) => {
