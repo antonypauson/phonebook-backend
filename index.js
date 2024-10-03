@@ -25,6 +25,17 @@ let persons = [
     }
 ]
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  // response.send(id)
+  const person = persons.find(n => n.id === id)
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+})
+
 app.get('/info', (request, response) => {
   const numberOfEntires = persons.length
   const date = new Date().toString()
