@@ -5,6 +5,8 @@ const morgan = require('morgan')
 
 app.use(cors())
 
+app.use(express.static('dist'))
+
 app.use(morgan('tiny'))
 
 app.use(express.json())
