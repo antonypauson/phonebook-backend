@@ -21,6 +21,11 @@ entries = [
         "id": "4",
         "name": "Mary Poppendieck", 
         "number": "39-23-6423122"
+        },
+        { 
+        "id": "5",
+        "name": "Kanye Omari West", 
+        "number": "39-23-6423122"
         }
 ]
 
@@ -51,6 +56,12 @@ app.get('/api/persons/:id', (request, response) => {
     } else {
         response.status(404).end()
     }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    entries = entries.filter(e => e.id !== id)
+    response.status(204).end()
 })
 
 const PORT = 3001
