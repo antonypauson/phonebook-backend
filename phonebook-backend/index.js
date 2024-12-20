@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 entries = [
         { 
         "id": "1",
@@ -28,6 +30,11 @@ entries = [
         "number": "39-23-6423122"
         }
 ]
+
+const generateId = () => {
+    const id = Math.random() * 100
+    return String(id)
+}
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello Express</h1>')
@@ -62,6 +69,27 @@ app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
     entries = entries.filter(e => e.id !== id)
     response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    const newName = body.name
+    
+    if (!body.name || !body.number) {
+        return response.status(400).json({
+            error: 'give me both name and number'
+        })
+    }
+
+    const entry = {
+        name: body.name,
+        number: String(body.number),
+        id: generateId()
+    }
+
+    entries = entries.concat(entry)
+
+    console.log(entries)
 })
 
 const PORT = 3001
