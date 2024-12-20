@@ -32,7 +32,7 @@ entries = [
 ]
 
 const generateId = () => {
-    const id = Math.random() * 100
+    const id = Math.floor(Math.random() * 100)
     return String(id)
 }
 
@@ -74,10 +74,15 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
     const newName = body.name
-    
+    const alreadyName = (entries.filter(e => e.name === newName)).length > 0 ? true : false
+
     if (!body.name || !body.number) {
         return response.status(400).json({
             error: 'give me both name and number'
+        })
+    } else if (alreadyName) {
+        return response.status(400).json({
+            error: 'provide a unique name'
         })
     }
 
@@ -89,7 +94,8 @@ app.post('/api/persons', (request, response) => {
 
     entries = entries.concat(entry)
 
-    console.log(entries)
+    console.log('entries', entries)
+    response.status(204).end()
 })
 
 const PORT = 3001
