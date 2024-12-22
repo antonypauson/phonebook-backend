@@ -96,7 +96,7 @@ app.post('/api/persons', (request, response) => {
 
     entries = entries.concat(entry)
 
-    console.log('entries', entries)
+    console.log(JSON.stringify(entry))
     response.status(204).end()
 })
 
